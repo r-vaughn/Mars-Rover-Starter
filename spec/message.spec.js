@@ -9,15 +9,17 @@ describe("Message class", function() {
     it("throws error if a name is not passed into the construtor as the first parameter", function() {
         expect(function() {new Message();}).toThrow(new Error("Name required."))
     });
+    
+    {
+        let commands = [new Command('MODE_CAHNGE', 'LOW_POWER'), new Command('STATUS_CHECK')];
+        let output = new Message("Carl", commands);
+        
+        test("constructor sets name", function() { 
+            expect(output.name).toEqual("Carl");
+        });
 
-    test("constructor sets name", function() { 
-        let output = new Message("Carl", ["run", "sit", "jump"]);
-        expect(output.name).toEqual("Carl");
-    });
-
-    test("contains a commands array passed into the constructor as the 2nd argument", function() {
-        let output = new Message("Carl", ["run", "sit", "jump"]);
-        expect(output.commands).toEqual(["run", "sit", "jump"]);
-    })
-
+        test("contains a commands array passed into the constructor as the 2nd argument", function() {
+            expect(output.commands).toEqual(commands);
+        });
+    }
 });

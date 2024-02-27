@@ -16,7 +16,7 @@ describe("Command class", function() {
   });
 
   test("constructor sets value passed in as the 2nd argument", function() {
-    //checks to ensure the constructor in the Command class correctly sets the commandType property in the new object 
+    //checks to ensure the constructor in the Command class correctly sets the commandType property in the new object  
     let output = new Command(1, 2); 
     expect(output.value).toEqual(2);
   })
