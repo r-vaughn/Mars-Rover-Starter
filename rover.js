@@ -12,20 +12,41 @@ class Rover {
    }
    
    receiveMessage(newMessage) {    
-      let newMessageCommands = [];
-      for (let i = 0; i < newMessage.commands.length; i++) {
-         newMessageCommands.push(newMessage.commands[i])
-      }
+      let resultsArray = [];
+      //let status = {resultsArray["roverStatus"] = {this.position, this.mode, this.generatorWatts}}
 
-
-      return {
+      let roverResponse = {
          message: newMessage.name,
-         results: newMessageCommands
+         results: resultsArray,
+         completed: true
+      };
+
+      let test;
+      //let commandsArray = [];
+      for (let i = 0; i < newMessage.commands.length; i++) {
+         
+         let result = {};
+
+         if (newMessage.commands[i].commandType === 'STATUS_CHECK') {
+            result = { completed: true, roverStatus: {mode: this.mode, generatorWatts: this.generatorWatts, position: this.position} };
+        
+         } else if (newMessage.commands[i].commandType === 'MOVE') {
+            result = { completed: true };
+         
+         } else if (newMessage.commands[i].commandType === 'MODE_CHANGE') {
+            if (newMessage.commands[i].value === 'LOW_POWER' || newMessage.commands[i].value === 'NORMAL') {
+               this.mode = newMessage.commands[i].value;
+            }
+            result = { completed: true };
+         
+         } else {
+            throw Error("Invalid command type");
+         }
+         resultsArray.push(result);
       }
+      
+      return roverResponse;
    }
 }
-
-// let rover = new Rover(98382);
-// console.log(rover); 
 
 module.exports = Rover;
