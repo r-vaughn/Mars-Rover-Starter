@@ -11,7 +11,6 @@ describe("Rover class", function() {
   // 7 tests here!
   {
     {
-      let commandsArray = [new Command('MODE_CHANGE', 'LOW_POWER'), new Command('STATUS_CHECK')];
       let rover = new Rover(98382);
       
       test("constructor sets position and default values for mode and generatorWatts", function() {
@@ -67,22 +66,50 @@ describe("Rover class", function() {
           }
           expect(modeChageCounts).toBeGreaterThan(0);
       }); 
+    }
+
+    {
+      let commandsArray = [ new Command('MODE_CHANGE', 'LOW_POWER'), new Command('MOVE', 90210)];
+      let newMessage = new Message('Carl', commandsArray);
+      let rover = new Rover(98382);
+      let roverResponse = rover.receiveMessage(newMessage);
 
 //12
       test("responds with false completed value when attempting to move in LOW_POWER mode", function() {
         //if rover includes {mode: LOW_POWER} will return {completed: false} and position remains the same
-        expect(rover.mode).toContain('LOW_POWER');
-        expect(rover.mode).toContain('MOVE', 0);
-        expect(roverResponse.results).toHaveProperty('completed', false); 
-        expect(roverResponse.results).toHaveProperty('position', 98382);
+        let moveCounts = 0;
+        for ( let i = 0; i < commandsArray.length; i++ ) {
+          const command = commandsArray[i];
+          if (command.commandType === 'MOVE' && rover.mode === 'LOW_POWER') {
+            moveCounts += 1;
+            expect(roverResponse.results[i]).toHaveProperty( 'completed', false );
+            expect(rover.position).not.toEqual(command.value);
+          }
+        }
+        expect(moveCounts).toBeGreaterThan(0);
       });
+    }
 
-/*13
+    {
+      let commandsArray = [ new Command('MODE_CHANGE', 'NORMAL'), new Command('MOVE', 90210)];
+      let newMessage = new Message('Carl', commandsArray);
+      let rover = new Rover(98382);
+      let roverResponse = rover.receiveMessage(newMessage);
+
+//13
       test("responds with the position for the move command", function() {
         //MOVE command will update the rover's position with the position value in the command
-        expect(rover.mode).toContain('MOVE', 0); 
-        expect(roverResponse.results).toEqual(0)
-      });*/
+        let moveCounts = 0;
+        for ( let i = 0; i < commandsArray.length; i++ ) {
+          const command = commandsArray[i];
+          if (command.commandType === 'MOVE' && rover.mode === 'NORMAL') {
+            moveCounts += 1;
+            expect(roverResponse.results[i]).toHaveProperty( 'completed', true );
+            expect(rover.position).toEqual(command.value);
+          }
+        }
+        expect(moveCounts).toBeGreaterThan(0);
+      });
     }
   }
 });
