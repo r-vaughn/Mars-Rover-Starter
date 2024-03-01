@@ -10,6 +10,7 @@ describe("Rover class", function() {
 
   // 7 tests here!
   {
+
     {
       let rover = new Rover(98382);
       
@@ -19,6 +20,8 @@ describe("Rover class", function() {
         expect(rover.generatorWatts).toEqual(110);
       });
     }
+
+
 
     { 
       let commandsArray = [new Command('MODE_CHANGE', 'LOW_POWER'), new Command('STATUS_CHECK')];
@@ -68,6 +71,8 @@ describe("Rover class", function() {
       }); 
     }
 
+
+
     {
       let commandsArray = [ new Command('MODE_CHANGE', 'LOW_POWER'), new Command('MOVE', 90210)];
       let newMessage = new Message('Carl', commandsArray);
@@ -90,6 +95,8 @@ describe("Rover class", function() {
       });
     }
 
+
+    
     {
       let commandsArray = [ new Command('MODE_CHANGE', 'NORMAL'), new Command('MOVE', 90210)];
       let newMessage = new Message('Carl', commandsArray);
@@ -111,5 +118,6 @@ describe("Rover class", function() {
         expect(moveCounts).toBeGreaterThan(0);
       });
     }
+
   }
 });
