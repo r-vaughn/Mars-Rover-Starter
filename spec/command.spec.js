@@ -11,13 +11,13 @@ describe("Command class", function() {
 
   test("constructor sets command type", function() {
     //checks to ensure the constructor in the Command class correctly sets the commandType property in the new object
-    let output = new Command(1, 2);
-    expect(output.commandType).toEqual(1);
+    let output = new Command('1', 2);
+    expect(output.commandType).toEqual('1');
   });
 
   test("constructor sets value passed in as the 2nd argument", function() {
     //checks to ensure the constructor in the Command class correctly sets the commandType property in the new object  
-    let output = new Command(1, 2); 
+    let output = new Command('1', 2); 
     expect(output.value).toEqual(2);
   })
 
